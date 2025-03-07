@@ -55,7 +55,7 @@ export default {
       this.loading = true;
 
       try {
-        const response = await axios.post("http://localhost:8080/api/auth/login", {
+        const response = await axios.post("https://0067-2001-16a2-f091-4600-cd35-2609-bbcc-570.ngrok-free.app/api/auth/login", {
           email: this.email,
           password: this.password,
         });
