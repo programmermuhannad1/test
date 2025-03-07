@@ -10,7 +10,12 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',  // تحديد مجلد البناء
+    terserOptions: {
+      compress: {
+        drop_console: true,  // لإزالة الـ console.logs في ملفات الإنتاج
+      },
+    },
+    assetsDir: 'assets',  // لتحديد مجلد الصور والملفات الثابتة
   },
-  // هذا الاختيار يضمن أن Vercel يحدد بشكل صحيح بيئة الإنتاج
-  base: '/',
+  base: process.env.NODE_ENV === 'production' ? '/front/' : '/',  // تغيير base حسب البيئة
 })
