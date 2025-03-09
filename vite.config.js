@@ -3,14 +3,10 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  build: {
-    outDir: 'dist',  // تحديد مجلد البناء
-    terserOptions: {
-      compress: {
-        drop_console: true,  // لإزالة الـ console.logs في ملفات الإنتاج
-      },
-    },
+  server: {
+    historyApiFallback: true
   },
-  base: '/',
-
+  build: {
+    outDir: 'dist'
+  }
 })
