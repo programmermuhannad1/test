@@ -66,22 +66,22 @@ export default {
 
         const fieldId = route.params.id;
 
-        const fieldResponse = await axios.get(`https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields/${fieldId}`, {
+        const fieldResponse = await axios.get(`http://localhost:8080/api/fields/${fieldId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         field.value = fieldResponse.data;
 
-        const roadmapResponse = await axios.get(`https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/roadmaps/field/${fieldId}`, {
+        const roadmapResponse = await axios.get(`http://localhost:8080/api/roadmaps/field/${fieldId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         roadmap.value = roadmapResponse.data.length ? roadmapResponse.data[0] : null;
 
-        const coursesResponse = await axios.get(`https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/courses/field/${fieldId}`, {
+        const coursesResponse = await axios.get(`http://localhost:8080/api/courses/field/${fieldId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         courses.value = coursesResponse.data;
 
-        const certsResponse = await axios.get(`https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/certifications/field/${fieldId}`, {
+        const certsResponse = await axios.get(`http://localhost:8080/api/certifications/field/${fieldId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         certifications.value = certsResponse.data;
