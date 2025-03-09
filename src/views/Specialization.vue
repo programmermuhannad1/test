@@ -1,6 +1,6 @@
 <template>
   <div class="specialization-container">
-    <h2 class="title">  ااالمجالات</h2>
+    <h2 class="title">المجالات</h2>
 
     <!-- رسالة التحميل -->
     <div v-if="loading" class="loading-message">جاري تحميل البيانات...</div>
@@ -48,11 +48,16 @@ export default {
         }
 
         // إرسال الطلب للحصول على البيانات
-        const response = await axios.get("https://c79a-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://c79a-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true", // تجاوز تحذيرات ngrok
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         // التحقق من نوع الاستجابة
         console.log("Content-Type:", response.headers['content-type']);  // تحقق من نوع الاستجابة
@@ -64,13 +69,35 @@ export default {
         fields.value = response.data.filter(field => field.name && field.id);  // تصفية البيانات الفارغة
 
       } catch (error) {
-        // في حال وجود خطأ
-        errorMessage.value = "فشل في تحميل البيانات، حاول مرة أخرى لاحقًا.";
-        console.error("Error fetching fields:", error);
+        handleError(error);
       } finally {
         // عند الانتهاء من التحميل
         loading.value = false;
       }
+    };
+
+    const handleError = (error) => {
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            errorMessage.value = "غير مصرح بالوصول، يرجى تسجيل الدخول";
+            break;
+          case 403:
+            errorMessage.value = "ليس لديك الصلاحية لعرض المحتوى";
+            break;
+          case 404:
+            errorMessage.value = "البيانات غير متوفرة حالياً";
+            break;
+          default:
+            errorMessage.value = "حدث خطأ غير متوقع";
+        }
+      } else if (error.request) {
+        errorMessage.value = "تعذر الاتصال بالخادم";
+      } else {
+        errorMessage.value = "خطأ في إعداد الطلب";
+      }
+      
+      console.error("تفاصيل الخطأ:", error);
     };
 
     // جلب البيانات عند تحميل الصفحة
