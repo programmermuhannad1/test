@@ -46,7 +46,7 @@ export default {
         }
 
         // إرسال الطلب للحصول على البيانات
-        const response = await axios.get("https://c79a-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app /api/fields", {
+        const response = await axios.get("https://c79a-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
