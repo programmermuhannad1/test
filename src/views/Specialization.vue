@@ -6,19 +6,21 @@
     <div v-if="loading" class="loading-message">جاري تحميل البيانات...</div>
     
     <!-- رسالة الخطأ -->
-    <div v-else-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-    
-    <!-- رسالة لا توجد بيانات -->
-    <div v-else-if="fields.length === 0" class="no-data-message">لا توجد بيانات متاحة</div>
+    <div v-else>
+      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+      
+      <!-- رسالة لا توجد بيانات -->
+      <div v-else-if="fields.length === 0" class="no-data-message">لا توجد بيانات متاحة</div>
 
-    <!-- عرض البيانات بعد تحميلها بنجاح -->
-    <div v-else class="specialization-grid">
-      <div v-for="(field, index) in fields" :key="index" class="specialization-card">
-        <h3 class="field-name">{{ field.name }}</h3>
-        <p class="field-description">اكتشف المزيد عن {{ field.name }}</p>
-        <router-link :to="'/field/' + field.id">
-          <button class="explore-button">استكشاف</button>
-        </router-link>
+      <!-- عرض البيانات بعد تحميلها بنجاح -->
+      <div v-else class="specialization-grid">
+        <div v-for="(field, index) in fields" :key="index" class="specialization-card">
+          <h3 class="field-name">{{ field.name }}</h3>
+          <p class="field-description">اكتشف المزيد عن {{ field.name }}</p>
+          <router-link :to="'/field/' + field.id">
+            <button class="explore-button">استكشاف</button>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -44,14 +46,18 @@ export default {
         }
 
         // إرسال الطلب للحصول على البيانات
-        const response = await axios.get("https://d700-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
+        const response = await axios.get("https://c79a-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app /api/fields", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // تخزين البيانات في `fields`
-        fields.value = response.data;
+        // التحقق من البيانات المسترجعة
+        console.log("Fetched fields:", response.data);
+
+        // تصفية البيانات من القيم الفارغة
+        fields.value = response.data.filter(field => field.name && field.id);  // تصفية البيانات الفارغة
+
       } catch (error) {
         // في حال وجود خطأ
         errorMessage.value = "فشل في تحميل البيانات، حاول مرة أخرى لاحقًا.";
@@ -249,6 +255,7 @@ html, body {
   background: rgba(26, 54, 88, 0.4);
   border-radius: 15px;
   margin: 30px 0;
-  border: 1px solid rgba(168, 216, 255, 0.1);
+  border: 1px solid rgba(168, 216, 255, 0.2);
+  width: 80%;
 }
 </style>
