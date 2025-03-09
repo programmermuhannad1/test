@@ -59,33 +59,30 @@ export default {
 </script>
 
 <style scoped>
-/* ✅ جعل الصفحة ثابتة وعدم السماح بأي تمرير */
+/* الأساسيات */
 html, body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden; /* 🔥 يمنع التمرير بالكامل */
+  overflow-x: hidden;
+  background: #ffffff; /* الخلفية البيضاء */
+  font-family: 'Tajawal', sans-serif;
+  will-change: transform; /* تحسين الأداء */
+  color: #333333; /* النصوص بلون داكن */
 }
 
-/* ✅ خلفية زرقاء ثابتة بتدرج عصري */
 .specialization-container {
-  width: 100vw;
-  height: 100vh;
-  position: fixed; /* 🔥 تثبيت الخلفية والمحتوى */
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, #0a1f44, #1e3c72, #2a5298);
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 20px;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 20px;
-  overflow: hidden;
 }
 
-/* 🌟 تأثير للخلفية */
 .specialization-container::before {
   content: "";
   position: fixed;
@@ -93,124 +90,145 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, rgba(0,0,0,0) 80%);
+  background: #ffffff; /* خلفية بيضاء */
   z-index: -1;
-  animation: floatingBackground 8s infinite alternate ease-in-out;
 }
 
-/* 🔥 عنوان الصفحة */
+/* العنوان الرئيسي */
 .title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #00eaff;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  animation: fadeInDown 1s ease-out;
+  font-size: 3.5rem;
+  color: #1a3658; /* لون مناسب مع الخلفية البيضاء */
+  text-shadow: 0 0 25px rgba(26, 54, 88, 0.6);
+  margin: 0 0 60px 0;
+  position: relative;
+  padding-bottom: 20px;
+  text-align: center;
+  width: 100%;
+  font-weight: 300;
+  letter-spacing: 2px;
 }
 
-/* 🔥 شبكة التخصصات */
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: #5ab9ff;
+  box-shadow: 0 0 15px #5ab9ff;
+}
+
+/* شبكة البطاقات */
 .specialization-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  width: 90%;
-  max-width: 1200px;
-  padding-bottom: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 400px)); /* تقليص حجم البطاقات */
+  justify-content: center;
+  gap: 30px; /* تقليص المسافة بين البطاقات */
+  width: 100%;
+  max-width: 1400px;
+  padding: 30px 0;
+  margin: 0 auto;
 }
 
-/* ✨ تصميم الكروت */
+/* تصميم البطاقة الزجاجية */
 .specialization-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0px 8px 25px rgba(0, 255, 255, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(26, 54, 88, 0.1); /* خلفية أقل شفافية للبطاقات */
+  color: #333333; /* نص البطاقة بلون داكن */
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(168, 216, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 30px rgba(90, 185, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  transition: none;
 }
 
 .specialization-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 15px 30px rgba(0, 255, 255, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    0 0 40px rgba(90, 185, 255, 0.25);
+  transform: none;
 }
 
-/* 🔥 أسماء المجالات */
+/* النصوص داخل البطاقة */
 .field-name {
-  font-size: 24px;
-  font-weight: 600;
-  color: #00eaff;
-  margin-bottom: 10px;
-  transition: color 0.3s ease;
+  font-size: 1.8rem;
+  color: #1a3658; /* تغيير اللون ليتناسب مع الخلفية البيضاء */
+  margin: 0 0 15px;
+  text-shadow: 0 0 15px rgba(26, 54, 88, 0.4);
+  font-weight: 500;
+  position: relative;
 }
 
-.field-name:hover {
-  color: #ffcc00;
-}
-
-/* 📝 وصف المجال */
 .field-description {
-  font-size: 16px;
-  color: #ddd;
-  margin-bottom: 20px;
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  color: #5b6b8e; /* لون مناسب للنصوص الثانوية */
+  line-height: 1.6;
+  margin-bottom: 25px;
 }
 
-.field-description:hover {
-  color: #fff;
-}
-
-/* 🚀 زر الاستكشاف */
+/* زر الاستكشاف الفاخر */
 .explore-button {
-  width: 160px;
-  padding: 12px;
-  background: #00eaff;
-  color: #04293A;
+  background: linear-gradient(135deg, 
+    rgba(90, 185, 255, 0.9) 0%, 
+    rgba(42, 130, 255, 0.9) 100%);
+  color: #001f3d; /* النص داخل الزر يكون داكن ليتناسب مع الخلفية البيضاء */
+  padding: 12px 30px;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
-  box-shadow: 0px 0px 15px #00eaff;
+  box-shadow: 
+    0 4px 20px rgba(90, 185, 255, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .explore-button:hover {
-  background: #04293A;
-  color: #00eaff;
-  transform: scale(1.1);
-  box-shadow: 0px 0px 25px #00eaff;
+  transform: none;
+  box-shadow: 
+    0 6px 25px rgba(90, 185, 255, 0.5),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
 }
 
-/* 🔥 أنيميشن عند فتح الصفحة */
-@keyframes fadeInDown {
-  0% {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* 🎭 أنيميشن للخلفية */
-@keyframes floatingBackground {
-  0% {
-    transform: translateY(0px);
-  }
-  100% {
-    transform: translateY(-20px);
-  }
-}
-
-/* 📱 تحسين التصميم للشاشات الصغيرة */
+/* التصميم المتجاوب */
 @media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+
   .specialization-grid {
     grid-template-columns: 1fr;
+    width: 95%;
+  }
+
+  .specialization-card {
+    padding: 20px;
+    margin: 0 10px;
   }
 
   .explore-button {
-    width: 100%;
+    padding: 10px 25px;
   }
+}
+
+/* الرسائل */
+.loading-message,
+.error-message,
+.no-data-message {
+  font-size: 1.3rem;
+  color: #a8d8ff;
+  text-align: center;
+  padding: 25px 35px;
+  background: rgba(26, 54, 88, 0.4);
+  border-radius: 15px;
+  margin: 30px 0;
+  border: 1px solid rgba(168, 216, 255, 0.1);
 }
 </style>

@@ -24,14 +24,6 @@
     </form>
 
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-
-    <!-- الرجل الجري -->
-    <div class="running-man">
-      <div class="man-head"></div>
-      <div class="man-body"></div>
-      <div class="man-leg left-leg"></div>
-      <div class="man-leg right-leg"></div>
-    </div>
   </div>
 </template>
 
@@ -55,7 +47,7 @@ export default {
       this.loading = true;
 
       try {
-        const response = await axios.post("https://0067-2001-16a2-f091-4600-cd35-2609-bbcc-570.ngrok-free.app/api/auth/login", {
+        const response = await axios.post("http://localhost:8080/api/auth/login", {
           email: this.email,
           password: this.password,
         });
@@ -102,7 +94,6 @@ export default {
 #login img {
   max-width: 180px;
   margin-bottom: 40px;
-  animation: fadeIn 1s ease-out;
 }
 
 form {
@@ -174,87 +165,5 @@ button:disabled {
 
 .register-text a:hover {
   text-decoration: underline;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.running-man {
-  position: absolute;
-  bottom: 0;
-  left: -100px;
-  width: 50px;
-  height: 100px;
-  animation: runAnimation 5s linear infinite; 
-}
-
-.man-head {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  background-color: #f1c40f; 
-  border-radius: 50%;
-  transform: translateX(-50%);
-}
-
-.man-body {
-  position: absolute;
-  top: 35px;
-  left: 50%;
-  width: 30px;
-  height: 40px;
-  background-color: #00bcd4; 
-  border-radius: 5px;
-  transform: translateX(-50%);
-}
-
-.man-leg {
-  position: absolute;
-  width: 10px;
-  height: 20px;
-  background-color: #e74c3c;
-  border-radius: 5px;
-}
-
-.left-leg {
-  top: 70px;
-  left: 10px;
-  transform-origin: top left;
-  animation: legMove 1s infinite alternate;
-}
-
-.right-leg {
-  top: 70px;
-  right: 10px;
-  transform-origin: top right;
-  animation: legMove 1s infinite alternate-reverse;
-}
-
-@keyframes runAnimation {
-  0% {
-    left: -100px;
-  }
-  100% {
-    left: 100%; 
-  }
-}
-
-@keyframes legMove {
-  0% {
-    transform: rotate(20deg);
-  }
-  100% {
-    transform: rotate(-20deg);
-  }
 }
 </style>

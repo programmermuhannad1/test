@@ -99,101 +99,114 @@ export default {
 </script>
 
 <style scoped>
-/* 🌌 خلفية متحركة نيون */
+/* الأساسيات */
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  min-height: 100vh;
-  background: radial-gradient(circle, #001f3f, #003366, #004080);
-  color: white;
-  font-family: "Tajawal", sans-serif;
-  overflow-y: auto;
+  min-height: 100%;
+  width: 100%;
+  background: #ffffff; /* خلفية بيضاء */
+  font-family: 'Tajawal', sans-serif;
+  overflow-x: hidden;
+  will-change: transform;
 }
 
-/* 🎇 إضافة تأثيرات نيون */
-body::before {
-  content: "";
+.field-details {
+  width: 100%;
+  min-height: 100vh;
+  padding: 4rem 8% 8rem;
+  background: transparent;
+  color: #333; /* نص داكن ليتناسب مع الخلفية البيضاء */
+  position: relative;
+}
+
+/* الخلفية الزجاجية */
+.field-details::before {
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://source.unsplash.com/1920x1080/?technology,abstract') no-repeat center center/cover;
-  filter: blur(10px);
-  opacity: 0.3;
+  background: rgba(255, 255, 255, 0.8); /* خلفية بيضاء شفافة */
   z-index: -1;
 }
 
-/* 💎 تأثير زجاجي عصري */
-.field-details {
-  width: 100%;
-  min-height: 100vh;
-  padding: 40px 20px;
-  text-align: center;
-}
-
+/* القسم */
 .section {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  padding: 25px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  width: 90%;
-  max-width: 800px;
-  box-shadow: 0px 5px 20px rgba(0, 195, 255, 0.3);
-  transition: transform 0.3s ease-in-out;
+  margin: 4rem 0;
+  padding: 3rem 5%;
+  background: rgba(0, 0, 0, 0.1); /* خلفية داكنة خفيفة */
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
-.section:hover {
-  transform: translateY(-5px);
-}
-
-/* 🔥 تحسين العناوين */
-.field-title, .section-title {
+/* العنوان الفرعي */
+.section-title {
   font-size: 2.5rem;
-  font-weight: bold;
-  color: #00c3ff;
-  text-shadow: 0px 0px 20px #00c3ff;
-  margin-bottom: 20px;
+  color: #2a5298; /* لون أزرق يناسب الخلفية البيضاء */
+  text-shadow: 0 0 15px rgba(168, 216, 255, 0.6);
 }
 
-/* 🌟 تصميم الأزرار */
+/* النصوص */
+.field-title {
+  font-size: 3rem;
+  color: #2a5298; /* لون أزرق داكن */
+}
+
+.field-intro,
+.no-data {
+  color: #555; /* نص بلون داكن أغمق */
+}
+
+/* الزر */
 .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #00c3ff;
-  color: #04293A;
-  text-decoration: none;
-  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(42, 130, 255, 0.9) 0%, rgba(90, 185, 255, 0.9) 100%);
+  color: #ffffff;
+  padding: 14px 35px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.15rem;
   font-weight: bold;
-  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(90, 185, 255, 0.3);
 }
 
 .btn:hover {
-  background: #04293A;
-  color: #00c3ff;
-  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(90, 185, 255, 0.5);
 }
 
-/* 🚀 زر العودة */
+/* زر العودة */
 .back-button {
-  margin-top: 30px;
-  padding: 12px 24px;
-  background: #00c3ff;
-  color: #04293A;
-  border: none;
+  position: fixed;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(42, 130, 255, 0.9) 0%, rgba(90, 185, 255, 0.9) 100%);
+  color: #ffffff;
+  padding: 14px 35px;
   border-radius: 12px;
-  font-size: 18px;
+  font-size: 1.15rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 0px 15px #00c3ff;
+  box-shadow: 0 4px 20px rgba(90, 185, 255, 0.3);
 }
 
 .back-button:hover {
-  background: #04293A;
-  color: #00c3ff;
-  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(90, 185, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .field-details {
+    padding: 4rem 5% 8rem;
+  }
+  
+  .section {
+    margin: 3rem 0;
+    padding: 2rem;
+  }
 }
 </style>

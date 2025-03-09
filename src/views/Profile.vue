@@ -7,27 +7,35 @@
         
         <div class="form-group">
           <label for="firstName">الاسم الأول</label>
-          <input type="text" id="firstName" v-model="user.firstName" />
+          <input type="text" id="firstName" v-model="user.firstName" disabled />
         </div>
 
         <div class="form-group">
           <label for="lastName">الاسم الأخير</label>
-          <input type="text" id="lastName" v-model="user.lastName" />
+          <input type="text" id="lastName" v-model="user.lastName" disabled />
         </div>
 
         <div class="form-group">
           <label for="email">البريد الإلكتروني</label>
-          <input type="email" id="email" v-model="user.email" />
+          <input type="email" id="email" v-model="user.email" disabled />
         </div>
 
         <div class="form-group">
           <label for="country">الدولة</label>
-          <input type="text" id="country" v-model="user.country" />
+          <select v-model="selectedCountry" @change="fetchCities">
+            <option v-for="(name, code) in countries" :key="code" :value="code">
+              {{ name }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
           <label for="city">المدينة</label>
-          <input type="text" id="city" v-model="user.city" />
+          <select v-model="selectedCity">
+            <option v-for="city in cities" :key="city" :value="city">
+              {{ city }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -51,7 +59,6 @@
     <button @click="logout" class="logout-btn">تسجيل الخروج</button>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -61,10 +68,15 @@ export default {
       user: null,
       password: '',
       confirmPassword: '',
+      countries: {}, // لتخزين الدول
+      cities: [], // لتخزين المدن بناءً على الدولة المحددة
+      selectedCountry: '', // لتخزين الدولة المحددة
+      selectedCity: '', // لتخزين المدينة المحددة
     };
   },
   mounted() {
     this.fetchUserData();
+    this.fetchCountries();
   },
   methods: {
     fetchUserData() {
@@ -82,6 +94,53 @@ export default {
       });
     },
 
+    fetchCountries() {
+      axios.get('https://restcountries.com/v3.1/all')
+      .then(response => {
+        // ترتيب الدول حسب الحروف الأبجدية
+        const sortedCountries = response.data
+          .map(country => ({
+            code: country.cca2,
+            name: country.name.common
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name)); // ترتيب حسب الاسم
+          
+        this.countries = sortedCountries.reduce((acc, { code, name }) => {
+          acc[code] = name;
+          return acc;
+        }, {});
+      })
+      .catch(error => {
+        console.error("حدث خطأ أثناء جلب الدول:", error);
+      });
+    },
+
+    fetchCities() {
+      if (!this.selectedCountry) return;
+
+      // إرسال استعلام للـ API بناءً على الدولة المحددة
+      axios.get('https://wft-geo-db.p.rapidapi.com/v1/geo/cities', {
+        params: { country: this.selectedCountry },
+        headers: {
+          'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+          'X-RapidAPI-Key': 'YOUR_RAPIDAPI_KEY',  // ضع مفتاح الـ API هنا
+        }
+      })
+      .then(response => {
+        console.log('المدن المسترجعة:', response.data); // عرض الاستجابة في الـ console
+        if (response.data && response.data.data && response.data.data.length > 0) {
+          this.cities = response.data.data.map(city => city.city).sort();
+        } else {
+          this.cities = [];
+          console.log('لا توجد مدن للاختيار');
+        }
+      })
+      .catch(error => {
+        console.error("حدث خطأ أثناء جلب المدن:", error);
+        this.cities = [];  // التأكد من أن المدن فارغة في حال الخطأ
+      });
+    },
+
     updateUserProfile() {
       const token = localStorage.getItem('token');
       
@@ -94,8 +153,8 @@ export default {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-        country: this.user.country,
-        city: this.user.city,
+        country: this.selectedCountry,
+        city: this.selectedCity,
         password: this.password ? this.password : null,
       };
 
@@ -121,29 +180,31 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 /* ✅ تغطية الشاشة بالكامل دائمًا */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
-  background-attachment: fixed;
-  color: white;
+  height: 100%;
+  background: #ffffff; /* خلفية بيضاء */
+  color: #333; /* نص داكن */
   font-family: "Tajawal", sans-serif;
-  overflow-x: hidden;
+  overflow-x: hidden; /* منع التمرير الأفقي */
+  display: flex; /* تموضع المحتوى في المنتصف */
+  justify-content: center;
+  align-items: center;
 }
 
 /* 🌟 تحسين خلفية الصفحة */
 .profile-container {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* الحاوية تغطي كامل ارتفاع الشاشة */
   padding: 40px 20px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: #ffffff; /* خلفية بيضاء */
 }
 
 /* 🔥 تأكد من أن الخلفية تمتد دائمًا */
@@ -154,7 +215,7 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+  background: #ffffff; /* خلفية بيضاء */
   z-index: -1;
 }
 
@@ -162,19 +223,20 @@ html, body {
 .page-title {
   font-size: 36px;
   font-weight: bold;
-  color: #00ffff;
+  color: #2a5298; /* لون أزرق داكن */
   margin-bottom: 30px;
+  text-shadow: 0 0 15px rgba(168, 216, 255, 0.6); /* تأثير الظل */
 }
 
 /* ✅ تحسين تصميم النموذج */
 .form-container {
   max-width: 500px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.9); /* خلفية شفافة بيضاء */
   padding: 30px;
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* 🔥 حقول الإدخال */
@@ -184,26 +246,30 @@ html, body {
   margin-bottom: 20px;
 }
 
+/* تنسيق حقل الـ label */
 label {
-  text-align: left;
+  text-align: center;
   font-size: 16px;
-  color: #ddd;
+  color: #333; /* نص داكن */
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
-input {
+/* تنسيق الحقول المدخلة */
+input, select {
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   font-size: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
   transition: border 0.3s ease, background 0.3s ease;
+  text-align: center; /* النص في المنتصف */
 }
 
-input:focus {
-  border-color: #00ffff;
-  background: rgba(255, 255, 255, 0.2);
+input:focus, select:focus {
+  border-color: #5ab9ff;
+  background: rgba(90, 185, 255, 0.1);
   outline: none;
 }
 
@@ -211,8 +277,8 @@ input:focus {
 button {
   padding: 12px 20px;
   border: none;
-  background: #00ffff;
-  color: #04293A;
+  background: linear-gradient(135deg, rgba(90, 185, 255, 0.9) 0%, rgba(42, 130, 255, 0.9) 100%);
+  color: #ffffff;
   font-size: 18px;
   font-weight: bold;
   border-radius: 8px;
@@ -223,8 +289,8 @@ button {
 }
 
 button:hover {
-  background: #04293A;
-  color: #00ffff;
+  background: #5ab9ff;
+  color: #001f3d;
   transform: scale(1.05);
 }
 
@@ -232,7 +298,7 @@ button:hover {
 .logout-btn {
   margin-top: 30px;
   padding: 12px 20px;
-  background: #ff4b5c;
+  background: #5ab9ff;
   color: white;
   border: none;
   border-radius: 8px;
@@ -243,5 +309,23 @@ button:hover {
 .logout-btn:hover {
   background: #d43f50;
   transform: scale(1.05);
+}
+
+/* تنسيق القوائم المنسدلة */
+select {
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+  text-align: center;
+  transition: border 0.3s ease, background 0.3s ease;
+}
+
+select:focus {
+  border-color: #5ab9ff;
+  background: rgba(90, 185, 255, 0.1);
+  outline: none;
 }
 </style>
