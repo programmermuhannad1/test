@@ -36,7 +36,7 @@ export default {
           return;
         }
 
-        const response = await axios.get("https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
+        const response = await axios.get("https://d700-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -96,7 +96,7 @@ html, body {
 
 /* العنوان الرئيسي */
 .title {
-  font-size: 3.5rem;
+  font-size: 3rem;
   color: #1a3658; /* لون مناسب مع الخلفية البيضاء */
   text-shadow: 0 0 25px rgba(26, 54, 88, 0.6);
   margin: 0 0 60px 0;
@@ -123,7 +123,7 @@ html, body {
 /* شبكة البطاقات */
 .specialization-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 400px)); /* تقليص حجم البطاقات */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* تحسين توزيع الأعمدة */
   justify-content: center;
   gap: 30px; /* تقليص المسافة بين البطاقات */
   width: 100%;
@@ -204,7 +204,7 @@ html, body {
   }
 
   .specialization-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* استخدام عمود واحد على الأجهزة الصغيرة */
     width: 95%;
   }
 
@@ -215,6 +215,14 @@ html, body {
 
   .explore-button {
     padding: 10px 25px;
+  }
+
+  .field-name {
+    font-size: 1.5rem;
+  }
+
+  .field-description {
+    font-size: 0.9rem;
   }
 }
 
