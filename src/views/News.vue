@@ -57,7 +57,7 @@
         loading.value = true;
         try {
           const response = await fetch(
-            `https://newsapi.org/v2/top-headlines?category=technology&language=en&pageSize=${pageSize}&page=${page.value}&apiKey=1c2ecdeba1734a91abac029b03aceebd`
+            `https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey=a31572b692e0700234402e8e770a5184`
           );
           const data = await response.json();
           news.value = [...news.value, ...data.articles];
