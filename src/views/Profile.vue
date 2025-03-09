@@ -81,7 +81,7 @@ export default {
   methods: {
     fetchUserData() {
       const token = localStorage.getItem('token');
-      axios.get('http://localhost:8080/api/users/me', {
+      axios.get('https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/users/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         }

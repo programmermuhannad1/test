@@ -36,7 +36,7 @@ export default {
           return;
         }
 
-        const response = await axios.get("http://localhost:8080/api/fields", {
+        const response = await axios.get("https://2025-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
