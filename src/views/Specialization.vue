@@ -40,6 +40,8 @@ export default {
       try {
         // الحصول على التوكن من التخزين المحلي
         let token = localStorage.getItem("token")?.trim();
+        console.log("Token:", token);  // تأكد من وجود التوكن
+
         if (!token) {
           errorMessage.value = "لم يتم العثور على توكن، الرجاء تسجيل الدخول مجددًا.";
           return;
@@ -51,6 +53,9 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        // التحقق من نوع الاستجابة
+        console.log("Content-Type:", response.headers['content-type']);  // تحقق من نوع الاستجابة
 
         // التحقق من البيانات المسترجعة
         console.log("Fetched fields:", response.data);
@@ -255,7 +260,6 @@ html, body {
   background: rgba(26, 54, 88, 0.4);
   border-radius: 15px;
   margin: 30px 0;
-  border: 1px solid rgba(168, 216, 255, 0.2);
-  width: 80%;
+  border: 1px solid rgba(168, 216, 255, 0.3);
 }
 </style>
