@@ -1,6 +1,6 @@
 <template>
   <div class="specialization-container">
-    <h2 class="title"> المجالات</h2>
+    <h2 class="title">  ااالمجالات</h2>
 
     <!-- رسالة التحميل -->
     <div v-if="loading" class="loading-message">جاري تحميل البيانات...</div>
