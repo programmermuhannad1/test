@@ -21,7 +21,10 @@
 
     <div v-else class="articles-container">
       <div v-for="(article, index) in filteredNews" :key="index" class="article-card">
+        <!-- إضافة صورة المقال إذا كانت موجودة -->
         <img v-if="article.urlToImage" :src="article.urlToImage" class="article-image" alt="news image" />
+        <div v-else class="article-image-placeholder"></div> <!-- Placeholder إذا لم توجد صورة -->
+
         <div class="article-content">
           <h3 class="article-title">{{ article.title }}</h3>
           <p class="article-description">{{ article.description }}</p>
@@ -198,6 +201,17 @@ export default {
   width: 100%;
   height: 180px;
   object-fit: cover;
+}
+
+.article-image-placeholder {
+  width: 100%;
+  height: 180px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 16px;
 }
 
 .article-content {
