@@ -275,7 +275,7 @@ export default {
   background: #0056b3;
 }
 
-/* تصغير المقالات للهواتف */
+/* تصغير  للهواتف */
 @media (max-width: 768px) {
   .articles-container {
     grid-template-columns: 1fr;
