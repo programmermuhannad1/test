@@ -1,5 +1,4 @@
-# Logs
-logs
+# تجاهل ملفات السجل
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,19 +6,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# تجاهل مجلدات الحزم والمخرجات
+node_modules/
+dist/
+dist-ssr/
+
+# تجاهل الملفات المحلية
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# تجاهل ملفات إعدادات المحررات
+.vscode/
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.vercel
+
+# السماح بملفات معينة ضمن المجلدات التي تم تجاهلها
+!.vscode/extensions.json
