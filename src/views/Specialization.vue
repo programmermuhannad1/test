@@ -2,10 +2,16 @@
   <div class="specialization-container">
     <h2 class="title">جميع المجالات</h2>
 
+    <!-- رسالة التحميل -->
     <div v-if="loading" class="loading-message">جاري تحميل البيانات...</div>
+    
+    <!-- رسالة الخطأ -->
     <div v-else-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+    
+    <!-- رسالة لا توجد بيانات -->
     <div v-else-if="fields.length === 0" class="no-data-message">لا توجد بيانات متاحة</div>
 
+    <!-- عرض البيانات بعد تحميلها بنجاح -->
     <div v-else class="specialization-grid">
       <div v-for="(field, index) in fields" :key="index" class="specialization-card">
         <h3 class="field-name">{{ field.name }}</h3>
@@ -30,27 +36,33 @@ export default {
 
     const fetchFields = async () => {
       try {
+        // الحصول على التوكن من التخزين المحلي
         let token = localStorage.getItem("token")?.trim();
         if (!token) {
           errorMessage.value = "لم يتم العثور على توكن، الرجاء تسجيل الدخول مجددًا.";
           return;
         }
 
+        // إرسال الطلب للحصول على البيانات
         const response = await axios.get("https://d700-2001-16a2-f17d-4a00-81c0-b3ec-38c-a182.ngrok-free.app/api/fields", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
+        // تخزين البيانات في `fields`
         fields.value = response.data;
       } catch (error) {
+        // في حال وجود خطأ
         errorMessage.value = "فشل في تحميل البيانات، حاول مرة أخرى لاحقًا.";
         console.error("Error fetching fields:", error);
       } finally {
+        // عند الانتهاء من التحميل
         loading.value = false;
       }
     };
 
+    // جلب البيانات عند تحميل الصفحة
     onMounted(fetchFields);
 
     return { fields, loading, errorMessage };
