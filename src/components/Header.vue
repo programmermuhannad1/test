@@ -5,8 +5,8 @@
       <img :src="logo2" alt="Logo" class="logo-icon" />
     </div>
 
-    <!-- الروابط -->
-    <div class="nav-links">
+    <!-- قائمة التنقل -->
+    <div class="nav-links" :class="{ 'nav-links-mobile': isMobile }">
       <RouterLink to="/Welcome">الرئيسية</RouterLink>
       <RouterLink to="/Test">الاختبار</RouterLink>
       <RouterLink to="/Specialization">المجالات</RouterLink>
@@ -14,17 +14,45 @@
       <RouterLink to="/Profile">معلوماتي</RouterLink>
       <RouterLink to="/news">الاخبار</RouterLink>
     </div>
+
+    <!-- أيقونة القائمة المنسدلة للموبايل -->
+    <div class="menu-icon" v-if="isMobile" @click="toggleMenu">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </div>
   </div>
 </template>
 
 <script>
 import logo2 from "../assets/logo2.png"
+import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
+    const logo2 = logo2;
+    const isMobile = ref(false);
+    const isMenuOpen = ref(false);
+
+    const checkMobile = () => {
+      isMobile.value = window.innerWidth <= 768;
+    };
+
+    const toggleMenu = () => {
+      isMenuOpen.value = !isMenuOpen.value;
+    };
+
+    onMounted(() => {
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+    });
+
     return {
-      logo2
-    }
+      logo2,
+      isMobile,
+      isMenuOpen,
+      toggleMenu
+    };
   }
 }
 </script>
@@ -33,7 +61,7 @@ export default {
 /* الـ Navbar */
 .navbar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background: linear-gradient(135deg, #1a3658, #2a5298);
   padding: 10px 40px;
@@ -109,6 +137,48 @@ export default {
   left: 0;
 }
 
+/* قائمة موبايل منسدلة */
+.nav-links-mobile {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1a3658;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+  border-radius: 10px;
+  display: none;
+}
+
+.nav-links-mobile a {
+  font-size: 18px;
+  padding: 10px;
+  text-align: center;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+}
+
+.menu-bar {
+  background-color: white;
+  height: 3px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.nav-links-mobile.show {
+  display: flex;
+}
+
 /* تصغير الـ Navbar وتكبير الروابط عند الشاشات الصغيرة */
 @media (max-width: 768px) {
   .navbar {
@@ -119,11 +189,11 @@ export default {
   }
 
   .nav-links {
-    gap: 10px;
+    display: none;
   }
 
-  .nav-links a {
-    font-size: 14px;
+  .nav-links-mobile {
+    display: none;
   }
 
   .logo-icon {
