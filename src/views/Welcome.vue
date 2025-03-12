@@ -1,28 +1,40 @@
 <template>
-  <body>
-    <h1>مرحبًا بك في الاختبار!</h1>
-    <p>استعد لاختبار مهاراتك البرمجية مع Code Avenue </p>
-    <button @click="startExam" class="start-button"> إبدأ الاختبار</button>
-
-    <div class="background-circles">
-      <div class="circle circle1"></div>
-      <div class="circle circle2"></div>
-      <div class="circle circle3"></div>
-    </div>
-  </body>
+  <div>
+    <h1>الأخبار من NewsAPI عبر Spring Boot</h1>
+    <ul>
+      <li v-for="article in articles" :key="article.url">
+        {{ article.title }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "Welcome",
+  data() {
+    return {
+      articles: [],
+    };
+  },
+  mounted() {
+    this.fetchNews("technology");
+  },
   methods: {
-    startExam() {
-      this.$router.push("/Test");
+    fetchNews(category) {
+      axios
+        .get(`http://localhost:8080/api/news?category=${category}`)
+        .then((response) => {
+          this.articles = JSON.parse(response.data).articles;
+        })
+        .catch((error) => {
+          console.error("حدث خطأ:", error);
+        });
     },
   },
 };
 </script>
-
 <style scoped>
 /* إزالة الهوامش والحواف البيضاء */
 html, body {
