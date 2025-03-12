@@ -1,48 +1,36 @@
 <template>
-  <div>
-    <h1>الأخبار من NewsAPI عبر Spring Boot</h1>
-    <ul>
-      <li v-for="article in articles" :key="article.url">
-        {{ article.title }}
-      </li>
-    </ul>
-  </div>
+  <body>
+    <h1>مرحبًا بك في الاختبار!</h1>
+    <p>استعد لاختبار مهاراتك البرمجية مع Code Avenue </p>
+    <button @click="startExam" class="start-button"> إبدأ الاختبار</button>
+
+    <div class="background-circles">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+    </div>
+  </body>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  data() {
-    return {
-      articles: [],
-    };
-  },
-  mounted() {
-    this.fetchNews("technology");
-  },
+  name: "Welcome",
   methods: {
-    fetchNews(category) {
-      axios
-        .get(`http://localhost:8080/api/news?category=${category}`)
-        .then((response) => {
-          this.articles = JSON.parse(response.data).articles;
-        })
-        .catch((error) => {
-          console.error("حدث خطأ:", error);
-        });
+    startExam() {
+      this.$router.push("/Test");
     },
   },
 };
 </script>
+
 <style scoped>
-/* إزالة الهوامش والحواف البيضاء */
+/* إزالة قيود الحجم والتدفق الزائد */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* لمنع ظهور أشرطة التمرير */
+  overflow: auto; /* السماح بالتدفق الزائد إذا لزم الأمر */
   display: flex; /* لترتيب المحتوى في المنتصف */
   flex-direction: column; /* لترتيب العناصر عمودياً */
   justify-content: center; /* لترتيب المحتوى في المنتصف عمودياً */

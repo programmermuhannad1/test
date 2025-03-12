@@ -73,9 +73,9 @@ export default {
     const fetchNews = async (category = "technology", page = 1) => {
       loading.value = true;
       errorMessage.value = "";
-      let apiCategory = "technology"; // القيمة الافتراضية
+      let apiCategory = "technology"; // Default value
 
-      // تحويل التصنيفات إلى القيم التي يدعمها API
+      // Map categories to API values
       if (category === "Artificial Intelligence") {
         apiCategory = "technology";
       } else if (category === "Cybersecurity") {
@@ -94,12 +94,12 @@ export default {
 
       try {
         const response = await fetch(
-          `https://newsapi.org/v2/top-headlines?category=${apiCategory}&language=en&country=us&apiKey=1c2ecdeba1734a91abac029b03aceebd&page=${page}`
+          `http://localhost:8080/api/news?category=${apiCategory}&page=${page}`
         );
         const data = await response.json();
         
-        if (data.status !== "ok") {
-          throw new Error(data.message || "حدث خطأ أثناء جلب الأخبار");
+        if (!response.ok) {
+          throw new Error(data.message || "Error fetching news");
         }
         
         news.value = page === 1 ? data.articles : [...news.value, ...data.articles];
@@ -122,7 +122,7 @@ export default {
 
     const filterByCategory = (category) => {
       selectedCategory.value = category;
-      page.value = 1; // reset page number when changing category
+      page.value = 1;
       fetchNews(category, page.value);
     };
 
