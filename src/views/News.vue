@@ -19,23 +19,10 @@
     <div v-if="errorMessage" class="error">⚠️ {{ errorMessage }}</div>
 
     <div v-else>
-      <div class="categories-container">
-        <button 
-          v-for="category in categories" 
-          :key="category" 
-          @click="filterByCategory(category)"
-          :class="{ 'active-category': selectedCategory === category }"
-          class="category-button">
-          {{ category }}
-        </button>
-      </div>
-
-      <div v-if="news.length === 0 && !loading" class="no-news"> لا توجد أخبار متاحة حاليًا.</div>
-
       <div class="articles-container">
         <div v-for="(article, index) in filteredNews" :key="index" class="article-item">
           <div class="article-image-container">
-            <img v-if="article.urlToImage" :src="article.urlToImage" class="article-image" alt="news image" />
+            <img v-if="article.image" :src="article.image" class="article-image" alt="news image" />
             <img v-else src="https://via.placeholder.com/300" class="article-image" alt="Placeholder image" />
           </div>
           <div class="article-content">
@@ -57,6 +44,7 @@
 
 <script>
 import { ref, computed, onMounted } from "vue";
+import axios from "axios";
 
 export default {
   setup() {
@@ -65,44 +53,20 @@ export default {
     const errorMessage = ref("");
     const searchQuery = ref("");
     const page = ref(1);
-    const selectedCategory = ref("All News");
-    const categories = [
-      "All News", "Artificial Intelligence", "Cybersecurity", "Programming and Software Development", "Cloud Computing", "Space and Astronomy", "Emerging Technologies"
-    ];
 
-    const fetchNews = async (category = "technology", page = 1) => {
+    const fetchNews = async (page = 1) => {
       loading.value = true;
       errorMessage.value = "";
-      let apiCategory = "technology"; // Default value
-
-      // Map categories to API values
-      if (category === "Artificial Intelligence") {
-        apiCategory = "technology";
-      } else if (category === "Cybersecurity") {
-        apiCategory = "technology";
-      } else if (category === "Programming and Software Development") {
-        apiCategory = "technology";
-      } else if (category === "Cloud Computing") {
-        apiCategory = "technology";
-      } else if (category === "Space and Astronomy") {
-        apiCategory = "science";
-      } else if (category === "Emerging Technologies") {
-        apiCategory = "technology";
-      } else if (category === "All News") {
-        apiCategory = "technology";
-      }
-
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/news?category=${apiCategory}&page=${page}`
-        );
-        const data = await response.json();
+        const response = await axios.get(`https://gnews.io/api/v4/top-headlines`, {
+          params: {
+            category: "technology",
+            lang: "ar",
+            token: "a31572b692e0700234402e8e770a5184"
+          }
+        });
         
-        if (!response.ok) {
-          throw new Error(data.message || "Error fetching news");
-        }
-        
-        news.value = page === 1 ? data.articles : [...news.value, ...data.articles];
+        news.value = page === 1 ? response.data.articles : [...news.value, ...response.data.articles];
         if (news.value.length === 0) {
           errorMessage.value = "⚠️ لا توجد أخبار متاحة حاليًا.";
         }
@@ -117,13 +81,7 @@ export default {
 
     const loadMoreNews = () => {
       page.value += 1;
-      fetchNews(selectedCategory.value, page.value);
-    };
-
-    const filterByCategory = (category) => {
-      selectedCategory.value = category;
-      page.value = 1;
-      fetchNews(category, page.value);
+      fetchNews(page.value);
     };
 
     const filteredNews = computed(() => {
@@ -135,11 +93,10 @@ export default {
       });
     });
 
-    return { news, loading, errorMessage, searchQuery, filteredNews, loadMoreNews, page, selectedCategory, categories, filterByCategory };
+    return { news, loading, errorMessage, searchQuery, filteredNews, loadMoreNews, page };
   },
 };
-</script>
-<style>
+</script><style>
 body {
   margin: 0;
   padding: 0;
