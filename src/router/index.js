@@ -11,7 +11,7 @@ import Profile from "../views/Profile.vue"
 import News from "../views/News.vue"
 
 const routes = [
-  { path: "/", redirect: "/Login" },
+  { path: "/", redirect: "/Welcome" },  // تغيير الـ redirect هنا
   { path: "/Login", name: "Login", component: Login },
   { path: "/Register", name: "Register", component: Register },
   { path: "/Welcome", name: "Welcome", component: Welcome },
