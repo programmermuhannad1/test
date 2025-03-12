@@ -1,0 +1,23 @@
+[
+    {
+      "title": "Tesla Launches New Car with Advanced Technologies",
+      "description": "Tesla has unveiled a new car powered by artificial intelligence...",
+      "url": "https://example.com/tesla-new-car",
+      "urlToImage": "https://example.com/tesla-image.jpg",
+      "keywords": ["Tesla", "cars", "AI"]
+    },
+    {
+      "title": "New iOS Update Improves Performance",
+      "description": "Apple has released a new iOS update...",
+      "url": "https://example.com/ios-update",
+      "urlToImage": "https://example.com/ios-image.jpg",
+      "keywords": ["Apple", "iOS", "update"]
+    },
+    {
+      "title": "Samsung Unveils Foldable Phone",
+      "description": "Samsung has revealed a foldable phone with new features...",
+      "url": "https://example.com/samsung-phone",
+      "urlToImage": "https://example.com/samsung-image.jpg",
+      "keywords": ["Samsung", "phone", "foldable"]
+    }
+  ]
