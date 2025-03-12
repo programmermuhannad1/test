@@ -283,4 +283,59 @@ body {
   background-color: #0056b3;
 }
 
-/* Media Queries for responsivenes
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .banner-container {
+    height: 300px;
+  }
+
+  .banner-images {
+    animation: scrollBanner 15s infinite ease-in-out;
+  }
+
+  .banner-image-item {
+    height: 300px;
+  }
+
+  .title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .search-box {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .article-item {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-container {
+    height: 250px;
+  }
+
+  .banner-image-item {
+    height: 250px;
+  }
+
+  .article-title {
+    font-size: 16px;
+  }
+
+  .article-description {
+    font-size: 14px;
+  }
+
+  .search-box {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .load-more-btn {
+    padding: 8px 15px;
+  }
+}
+</style>
